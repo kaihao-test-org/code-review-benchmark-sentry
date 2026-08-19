@@ -505,3 +505,5 @@ class GitHubInstallation(PipelineView):
             return error(request, self.active_organization)
 
         return pipeline.next_step()
+
+# retrigger: force real content change for delta-diff
