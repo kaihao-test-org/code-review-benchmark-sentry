@@ -648,3 +648,5 @@ class HealthcheckStrategyFactoryWrapper(ProcessingStrategyFactory):
     def create_with_partitions(self, commit, partitions):
         rv = self.inner.create_with_partitions(commit, partitions)
         return Healthcheck(self.healthcheck_file_path, rv)
+
+# retrigger: force real content change for delta-diff
