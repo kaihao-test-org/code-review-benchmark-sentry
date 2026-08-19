@@ -522,3 +522,5 @@ class OrganizationEventsStatsEndpoint(OrganizationEventsV2EndpointBase):
             )
         except ValidationError:
             return Response({"detail": "Comparison period is outside retention window"}, status=400)
+
+# retrigger: force real content change for delta-diff
