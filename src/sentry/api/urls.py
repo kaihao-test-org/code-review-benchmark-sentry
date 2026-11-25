@@ -209,6 +209,7 @@ from .endpoints.organization_pinned_searches import OrganizationPinnedSearchEndp
 from .endpoints.organization_plugins import OrganizationPluginsEndpoint
 from .endpoints.organization_plugins_configs import OrganizationPluginsConfigsEndpoint
 from .endpoints.organization_processingissues import OrganizationProcessingIssuesEndpoint
+from .endpoints.organization_projects_catalog import OrganizationProjectsCatalogEndpoint
 from .endpoints.organization_projects import (
     OrganizationProjectsCountEndpoint,
     OrganizationProjectsEndpoint,
@@ -1135,6 +1136,11 @@ urlpatterns = [
                     name="sentry-api-0-organization-processing-issues",
                 ),
                 url(
+        r"^(?P<organization_slug>[^\/]+)/projects-catalog/$",
+        OrganizationProjectsCatalogEndpoint.as_view(),
+        name="sentry-api-0-organization-projects-catalog",
+    ),
+    url(
                     r"^(?P<organization_slug>[^\/]+)/projects/$",
                     OrganizationProjectsEndpoint.as_view(),
                     name="sentry-api-0-organization-projects",
