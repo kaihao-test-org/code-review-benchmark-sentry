@@ -193,6 +193,7 @@ from .endpoints.organization_issues_resolved_in_release import (
 )
 from .endpoints.organization_join_request import OrganizationJoinRequestEndpoint
 from .endpoints.organization_member_details import OrganizationMemberDetailsEndpoint
+from .endpoints.organization_member_profile import OrganizationMemberProfileEndpoint
 from .endpoints.organization_member_index import OrganizationMemberIndexEndpoint
 from .endpoints.organization_member_issues_assigned import OrganizationMemberIssuesAssignedEndpoint
 from .endpoints.organization_member_issues_bookmarked import (
@@ -1100,6 +1101,11 @@ urlpatterns = [
                     name="sentry-api-0-organization-release-resolved",
                 ),
                 url(
+        r"^(?P<organization_slug>[^\/]+)/members/(?P<member_id>[^\/]+)/profile/$",
+        OrganizationMemberProfileEndpoint.as_view(),
+        name="sentry-api-0-organization-member-profile",
+    ),
+    url(
                     r"^(?P<organization_slug>[^\/]+)/members/(?P<member_id>[^\/]+)/$",
                     OrganizationMemberDetailsEndpoint.as_view(),
                     name="sentry-api-0-organization-member-details",
