@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from django import forms
 from django.conf import settings
+from django.utils.html import format_html
 from rest_framework.request import Request
 
 from sentry.models.activity import Activity
@@ -311,10 +312,11 @@ class IssueTrackingPlugin(Plugin):
             return tag_list
 
         tag_list.append(
-            {
-                "url": self.get_issue_url(group=group, issue_id=issue_id),
-                "displayName": self.get_issue_label(group=group, issue_id=issue_id),
-            }
+            format_html(
+                '<a href="{}" rel="noreferrer">{}</a>',
+                self.get_issue_url(group=group, issue_id=issue_id),
+                self.get_issue_label(group=group, issue_id=issue_id),
+            )
         )
 
         return tag_list
