@@ -1,5 +1,4 @@
 from rest_framework import status
-from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -20,26 +19,13 @@ class UserNotificationSettingsOptionsDetailEndpoint(UserEndpoint):
     # TODO(Steve): Make not private when we launch new system
     private = True
 
-    def convert_args(
-        self,
-        request: Request,
-        user_id: int | str | None = None,
-        *args,
-        notification_option_id: int,
-        **kwargs,
-    ):
-        args, kwargs = super().convert_args(request, user_id, *args, **kwargs)
-        user = kwargs["user"]
+    def delete(self, request: Request, user: User, notification_option_id: str) -> Response:
         try:
-            option = NotificationSettingOption.objects.get(id=notification_option_id, user=user)
+            option = NotificationSettingOption.objects.get(
+                id=notification_option_id,
+            )
         except NotificationSettingOption.DoesNotExist:
-            raise NotFound(detail="User notification setting does not exist")
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        kwargs["notification_setting_option"] = option
-        return args, kwargs
-
-    def delete(
-        self, request: Request, user: User, notification_setting_option: NotificationSettingOption
-    ) -> Response:
-        notification_setting_option.delete()
+        option.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

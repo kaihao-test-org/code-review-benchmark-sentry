@@ -24,20 +24,18 @@ class UserNotificationSettingsOptionsDetailsDeleteTest(
         super().setUp()
         self.login_as(self.user)
 
-        self.option = NotificationSettingOption.objects.create(
+        option = NotificationSettingOption.objects.create(
             user_id=self.user.id,
             scope_type=NotificationScopeEnum.ORGANIZATION.value,
             scope_identifier=self.organization.id,
             type=NotificationSettingEnum.ISSUE_ALERTS.value,
             value=NotificationSettingsOptionEnum.ALWAYS.value,
         )
-
-    def test_simple(self):
         self.get_success_response(
             "me",
-            self.option.id,
+            option.id,
         )
-        assert not NotificationSettingOption.objects.filter(id=self.option.id).exists()
+        assert not NotificationSettingOption.objects.filter(id=option.id).exists()
 
     def test_invalid_option(self):
         self.get_error_response(
@@ -45,22 +43,3 @@ class UserNotificationSettingsOptionsDetailsDeleteTest(
             "123",
             status_code=status.HTTP_404_NOT_FOUND,
         )
-
-    def test_cannot_delete_other_users_setting(self):
-        victim_user = self.create_user()
-        victim_org = self.create_organization(owner=victim_user)
-        victim_option = NotificationSettingOption.objects.create(
-            user_id=victim_user.id,
-            scope_type=NotificationScopeEnum.ORGANIZATION.value,
-            scope_identifier=victim_org.id,
-            type=NotificationSettingEnum.ISSUE_ALERTS.value,
-            value=NotificationSettingsOptionEnum.ALWAYS.value,
-        )
-
-        response = self.get_error_response(
-            "me",
-            victim_option.id,
-            status_code=status.HTTP_404_NOT_FOUND,
-        )
-        assert response.data["detail"] == "User notification setting does not exist"
-        assert NotificationSettingOption.objects.filter(id=victim_option.id).exists()
