@@ -124,6 +124,7 @@ from .endpoints.organization_access_request_details import OrganizationAccessReq
 from .endpoints.organization_activity import OrganizationActivityEndpoint
 from .endpoints.organization_api_key_details import OrganizationApiKeyDetailsEndpoint
 from .endpoints.organization_api_key_index import OrganizationApiKeyIndexEndpoint
+from .endpoints.organization_app_tokens import OrganizationAppTokensEndpoint
 from .endpoints.organization_auditlogs import OrganizationAuditLogsEndpoint
 from .endpoints.organization_auth_provider_details import OrganizationAuthProviderDetailsEndpoint
 from .endpoints.organization_auth_provider_send_reminders import (
@@ -859,6 +860,11 @@ urlpatterns = [
                     name="sentry-api-0-organization-api-key-details",
                 ),
                 url(
+        r"^(?P<organization_slug>[^\/]+)/app-tokens/$",
+        OrganizationAppTokensEndpoint.as_view(),
+        name="sentry-api-0-organization-app-tokens",
+    ),
+    url(
                     r"^(?P<organization_slug>[^\/]+)/audit-logs/$",
                     OrganizationAuditLogsEndpoint.as_view(),
                     name="sentry-api-0-organization-audit-logs",
