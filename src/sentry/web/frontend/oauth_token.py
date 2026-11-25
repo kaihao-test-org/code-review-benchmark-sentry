@@ -18,7 +18,6 @@ from sentry.models.apigrant import ApiGrant
 from sentry.models.apitoken import ApiToken
 from sentry.sentry_apps.token_exchange.util import GrantTypes
 from sentry.utils import json, metrics
-from sentry.utils.locking import UnableToAcquireLock
 from sentry.web.frontend.base import control_silo_view
 from sentry.web.frontend.openidtoken import OpenIDToken
 
@@ -129,9 +128,7 @@ class OAuthTokenView(View):
     def get_access_tokens(self, request: Request, application: ApiApplication) -> dict:
         code = request.POST.get("code")
         try:
-            grant = ApiGrant.objects.get(
-                application=application, application__status=ApiApplicationStatus.active, code=code
-            )
+            grant = ApiGrant.objects.get(application=application, code=code)
         except ApiGrant.DoesNotExist:
             return {"error": "invalid_grant", "reason": "invalid grant"}
 
@@ -144,12 +141,7 @@ class OAuthTokenView(View):
         elif grant.redirect_uri != redirect_uri:
             return {"error": "invalid_grant", "reason": "invalid redirect URI"}
 
-        try:
-            token_data = {"token": ApiToken.from_grant(grant=grant)}
-        except UnableToAcquireLock:
-            # TODO(mdtro): we should return a 409 status code here
-            return {"error": "invalid_grant", "reason": "invalid grant"}
-
+        token_data = {"token": ApiToken.from_grant(grant=grant)}
         if grant.has_scope("openid") and options.get("codecov.signing_secret"):
             open_id_token = OpenIDToken(
                 request.POST.get("client_id"),
@@ -158,7 +150,6 @@ class OAuthTokenView(View):
                 nonce=request.POST.get("nonce"),
             )
             token_data["id_token"] = open_id_token.get_signed_id_token(grant=grant)
-
         return token_data
 
     def get_refresh_token(self, request: Request, application: ApiApplication) -> dict:
