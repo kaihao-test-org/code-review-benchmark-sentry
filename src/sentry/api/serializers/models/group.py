@@ -72,11 +72,6 @@ def merge_list_dictionaries(
         dict1.setdefault(key, []).extend(val)
 
 
-class GroupAnnotation(TypedDict):
-    displayName: str
-    url: str
-
-
 class GroupStatusDetailsResponseOptional(TypedDict, total=False):
     autoResolved: bool
     ignoreCount: int
@@ -150,7 +145,7 @@ class BaseGroupSerializerResponse(BaseGroupResponseOptional):
     isSubscribed: bool
     subscriptionDetails: GroupSubscriptionResponseOptional | None
     hasSeen: bool
-    annotations: Sequence[GroupAnnotation]
+    annotations: Sequence[str]
 
 
 class SeenStats(TypedDict):
