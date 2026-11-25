@@ -15,14 +15,6 @@ from sentry.db.models.fields.hybrid_cloud_foreign_key import HybridCloudForeignK
 DEFAULT_EXPIRATION = timedelta(minutes=10)
 
 
-class InvalidGrantError(Exception):
-    pass
-
-
-class ExpiredGrantError(Exception):
-    pass
-
-
 def default_expiration():
     return timezone.now() + DEFAULT_EXPIRATION
 
@@ -104,10 +96,6 @@ class ApiGrant(Model):
 
     def redirect_uri_allowed(self, uri):
         return uri == self.redirect_uri
-
-    @classmethod
-    def get_lock_key(cls, grant_id):
-        return f"api_grant:{grant_id}"
 
     @classmethod
     def sanitize_relocation_json(
