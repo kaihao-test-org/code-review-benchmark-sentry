@@ -136,6 +136,7 @@ from .endpoints.organization_code_mapping_codeowners import (
 )
 from .endpoints.organization_code_mapping_details import OrganizationCodeMappingDetailsEndpoint
 from .endpoints.organization_code_mappings import OrganizationCodeMappingsEndpoint
+from .endpoints.organization_commit_search import OrganizationCommitSearchEndpoint
 from .endpoints.organization_config_integrations import OrganizationConfigIntegrationsEndpoint
 from .endpoints.organization_config_repositories import OrganizationConfigRepositoriesEndpoint
 from .endpoints.organization_dashboard_details import OrganizationDashboardDetailsEndpoint
@@ -1150,6 +1151,11 @@ urlpatterns = [
                     name="sentry-api-0-organization-sent-first-event",
                 ),
                 url(
+        r"^(?P<organization_slug>[^\/]+)/commit-search/$",
+        OrganizationCommitSearchEndpoint.as_view(),
+        name="sentry-api-0-organization-commit-search",
+    ),
+    url(
                     r"^(?P<organization_slug>[^\/]+)/repos/$",
                     OrganizationRepositoriesEndpoint.as_view(),
                     name="sentry-api-0-organization-repositories",
