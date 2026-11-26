@@ -263,6 +263,7 @@ from .endpoints.project_app_store_connect_credentials import (
     AppStoreConnectStartAuthEndpoint,
     AppStoreConnectUpdateCredentialsEndpoint,
 )
+from .endpoints.project_artifact_preview import ProjectArtifactPreviewEndpoint
 from .endpoints.project_avatar import ProjectAvatarEndpoint
 from .endpoints.project_codeowners import ProjectCodeOwnersEndpoint
 from .endpoints.project_codeowners_details import ProjectCodeOwnersDetailsEndpoint
@@ -1439,6 +1440,11 @@ urlpatterns = [
                     name="sentry-api-0-project-combined-rules",
                 ),
                 url(
+        r"^(?P<organization_slug>[^\/]+)/(?P<project_slug>[^\/]+)/artifact-preview/$",
+        ProjectArtifactPreviewEndpoint.as_view(),
+        name="sentry-api-0-project-artifact-preview",
+    ),
+    url(
                     r"^(?P<organization_slug>[^\/]+)/(?P<project_slug>[^\/]+)/avatar/$",
                     ProjectAvatarEndpoint.as_view(),
                     name="sentry-api-0-project-avatar",
