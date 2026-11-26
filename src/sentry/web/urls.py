@@ -27,6 +27,7 @@ from sentry.web.frontend.oauth_token import OAuthTokenView
 from sentry.web.frontend.organization_auth_settings import OrganizationAuthSettingsView
 from sentry.web.frontend.organization_avatar import OrganizationAvatarPhotoView
 from sentry.web.frontend.organization_integration_setup import OrganizationIntegrationSetupView
+from sentry.web.frontend.onboarding_continue import OnboardingContinueView
 from sentry.web.frontend.out import OutView
 from sentry.web.frontend.pipeline_advancer import PipelineAdvancerView
 from sentry.web.frontend.project_avatar import ProjectAvatarPhotoView
@@ -339,6 +340,7 @@ urlpatterns += [
     ),
     url(r"^api/[^0]+/", RedirectView.as_view(pattern_name="sentry-api", permanent=False)),
     url(r"^out/$", OutView.as_view()),
+    url(r"^onboarding/continue/$", OnboardingContinueView.as_view(), name="sentry-onboarding-continue"),
     url(r"^accept-transfer/$", react_page_view, name="sentry-accept-project-transfer"),
     url(
         r"^accept/(?P<member_id>\d+)/(?P<token>\w+)/$",
