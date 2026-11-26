@@ -279,6 +279,7 @@ from .endpoints.project_group_index import ProjectGroupIndexEndpoint
 from .endpoints.project_group_stats import ProjectGroupStatsEndpoint
 from .endpoints.project_index import ProjectIndexEndpoint
 from .endpoints.project_issues_resolved_in_release import ProjectIssuesResolvedInReleaseEndpoint
+from .endpoints.project_key_rotate import ProjectKeyRotateEndpoint
 from .endpoints.project_key_details import ProjectKeyDetailsEndpoint
 from .endpoints.project_key_stats import ProjectKeyStatsEndpoint
 from .endpoints.project_keys import ProjectKeysEndpoint
@@ -1578,6 +1579,11 @@ urlpatterns = [
                     name="sentry-api-0-project-keys",
                 ),
                 url(
+        r"^(?P<organization_slug>[^\/]+)/(?P<project_slug>[^\/]+)/keys/(?P<key_id>[^\/]+)/rotate/$",
+        ProjectKeyRotateEndpoint.as_view(),
+        name="sentry-api-0-project-key-rotate",
+    ),
+    url(
                     r"^(?P<organization_slug>[^\/]+)/(?P<project_slug>[^\/]+)/keys/(?P<key_id>[^\/]+)/$",
                     ProjectKeyDetailsEndpoint.as_view(),
                     name="sentry-api-0-project-key-details",
